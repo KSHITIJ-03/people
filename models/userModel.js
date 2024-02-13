@@ -38,8 +38,35 @@ const userSchema = new mongoose.Schema({
         type : Boolean,
         default : true,
         select : false
+    },
+    admin : {
+        type : Boolean,
+        default : false,
+        select : false
+    },
+    postCount : {
+        type : Number,
+        default : 0
     }
+},
+{
+    toJSON : {virtuals : true},
+    toObject : {virtuals : true}
 });
+
+userSchema.virtual("posts", {
+    ref : "Post",
+    foreignField : "author",
+    localField : "_id"
+})
+
+// userSchema.pre(/^find/, async function(next) {
+//     this.populate("posts");
+//     //this.select("-_id -author")
+//     next();
+// });
+
+
 
 userSchema.pre("save", async function(next){
     this.confirmPassword = undefined
@@ -78,6 +105,7 @@ userSchema.methods.createPasswordResetToken = function() {
     console.log("hello");
     return resetToken
 }
+
 
 
 const User = mongoose.model("User", userSchema);

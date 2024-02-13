@@ -29,6 +29,14 @@ postSchema.pre("save", function(next) {
     next()
 })
 
+// postSchema.pre(/^find/, function(next) {
+//     this.populate({
+//         path : "author",
+//         select : "name"
+//     })
+//     next()
+// })
+
 const Post = new mongoose.model("Post", postSchema)
 
 module.exports = Post

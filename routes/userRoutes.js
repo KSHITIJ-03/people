@@ -17,4 +17,9 @@ router.route("/forgotPassword").post(authController.forgotPassword)
 
 router.route("/resetPassword/:token").post(authController.resetPassword)
 
+router.route("/deleteMe").delete(authController.protect, userController.deleteUser)
+
+router.route("/updateMe").patch(authController.protect, userController.updateMe)
+
+router.route("/me").get(authController.protect, userController.getUser)
 module.exports = router

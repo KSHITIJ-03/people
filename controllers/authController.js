@@ -2,6 +2,8 @@ const User = require("./../models/userModel")
 const Post = require("./../models/postModel")
 const Comment = require("./../models/commentModel")
 const jwt = require("jsonwebtoken")
+const {ObjectId} = require("bson")
+
 
 const crypto = require("crypto")
 const sendEmail = require("./../utils/email")
@@ -277,8 +279,9 @@ exports.isAuthorOfComment = async (req, res, next) => {
     try {
         const comment = await Comment.findById(req.params.commentId)
         const post = await Post.findById(comment.post)
-        console.log(req.user._id); console.log(post.author);
-        if(!comment.author.equals(req.user._id) && !req.user._id.equals(post.author)) {
+        //console.log(req.user._id); console.log(post.author);
+        const user = await User.findOne({email : req.user.email}).select("admin")
+        if(!comment.author.equals(req.user._id) && !req.user._id.equals(post.author) && !user.admin) {
             return res.status(401).json({
                 status : "fail",
                 message : "you can't delete others comment"
@@ -295,10 +298,23 @@ exports.isAuthorOfComment = async (req, res, next) => {
 
 exports.isAuthor = async (req, res, next) => {
     try {
+        //console.log("hello"); console.log(req.params.postId);
         const post = await Post.findById(req.params.postId)
+
         console.log(post);
-        console.log(req.user._id); console.log(post.author);
-        if(!post.author.equals(req.user._id)) {
+        //console.log(post);
+        //console.log(req.user._id); console.log(post.author);
+        //console.log(req.user.admin); console.log(req.user);
+
+        //console.log(req.user._id.toHexString());
+
+        //console.log(req.user.email);
+
+        const user = await User.findOne({email : req.user.email}).select("admin")
+
+        //console.log(user);
+
+        if(!post.author.equals(req.user._id) && !user.admin) {
             return res.status(401).json({
                 status : "fail",
                 message : "you are not author of this post"
@@ -326,3 +342,19 @@ exports.isAuthorOfLike = async (req, res, next) => {
     }
 }
 
+exports.checkUser = async (req, res, next) => {
+    try {
+        if(!req.user.admin) {
+            return res.status(401).json({
+                status : "fail",
+                message : "not permitted"
+            })
+        }
+        next()
+    } catch(err) {
+        res.status(404).json({
+            status : "fail",
+            message : err
+        })
+    }
+}

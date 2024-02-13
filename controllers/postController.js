@@ -1,4 +1,5 @@
 const Post = require("./../models/postModel")
+const User = require("./../models/userModel")
 
 exports.createPost = async(req, res) => {
     try {
@@ -8,6 +9,8 @@ exports.createPost = async(req, res) => {
         const author = req.user._id
         const caption = req.body.caption
         const post = await Post.create({name, tags, author, caption})
+
+        await User.findByIdAndUpdate(author, {$inc :{postCount : 1}}, {runValidators : true})
 
         res.status(201).json({
             status : "success",
@@ -24,9 +27,12 @@ exports.createPost = async(req, res) => {
 
 exports.deletePost = async(req, res) => {
     try {
-        console.log("hello");
+        //console.log("hello");
+        //console.log(req.params.postId);
         const post = await Post.findByIdAndDelete(req.params.postId)
-        console.log(post);
+        //console.log(req.params.postId);
+        await User.findByIdAndUpdate(req.user._id, {$inc :{postCount : -1}}, {runValidators : true})
+        //console.log(post);
         res.status(204).json({
             status : "success",
             message : "post deleted"
