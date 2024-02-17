@@ -29,9 +29,12 @@ exports.deletePost = async(req, res) => {
     try {
         //console.log("hello");
         //console.log(req.params.postId);
-        const post = await Post.findByIdAndDelete(req.params.postId)
+        const post = await Post.findById(req.params.postId)
+        const author = post.author
+        console.log(author);
+        await Post.findByIdAndDelete(req.params.postId)
         //console.log(req.params.postId);
-        await User.findByIdAndUpdate(req.user._id, {$inc :{postCount : -1}}, {runValidators : true})
+        await User.findByIdAndUpdate(author, {$inc :{postCount : -1}}, {runValidators : true})
         //console.log(post);
         res.status(204).json({
             status : "success",

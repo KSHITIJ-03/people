@@ -34,6 +34,7 @@ exports.signup = async (req, res) => {
         const token = generateToken(user._id)
 
         user.password = undefined
+        user.admin = undefined
         user.active = undefined
         res.status(201).json({
             status : "success",

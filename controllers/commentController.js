@@ -1,17 +1,19 @@
 const Comment = require("./../models/commentModel")
-
+const Post = require("./../models/postModel")
 exports.createComment = async (req, res) => {
     try {
 
         const content = req.body.comment
         const author = req.user._id
-        const post = req.params.postId
+        const postId = req.params.postId
         const comment = await Comment.create({
             comment : content,
             author : author,
-            post : post
+            post : postId
         })
 
+        await Post.findByIdAndUpdate(postId, { $inc : {comments : 1}}, {runValidators : true})
+        
         res.status(201).json({
             status : "success",
             comment
@@ -26,6 +28,8 @@ exports.createComment = async (req, res) => {
 
 exports.deleteComment = async (req, res) => {
     try {
+        const postId = req.params.postId
+        await Post.findByIdAndUpdate(postId, { $inc : {comments : -1}}, {runValidators : true})
         await Comment.findByIdAndDelete(req.params.commentId)
         res.status(204).json({
             status : "success",
