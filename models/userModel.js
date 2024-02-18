@@ -60,11 +60,11 @@ userSchema.virtual("posts", {
     localField : "_id"
 })
 
-// userSchema.pre(/^find/, async function(next) {
+// userSchema.pre(/^find/, function(next) {
 //     this.populate("posts");
 //     //this.select("-_id -author")
 //     next();
-// });
+// })
 
 
 

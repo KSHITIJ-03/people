@@ -4,7 +4,7 @@ const likeSchema = new mongoose.Schema({
     post : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "Post",
-        require : [true, "like without post is not valid"]
+        require : [true, "like should be on a post"]
     },
     author : {
         type : mongoose.Schema.Types.ObjectId,

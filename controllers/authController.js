@@ -302,7 +302,7 @@ exports.isAuthor = async (req, res, next) => {
         //console.log("hello"); console.log(req.params.postId);
         const post = await Post.findById(req.params.postId)
 
-        console.log(post);
+        //console.log(post);
         //console.log(post);
         //console.log(req.user._id); console.log(post.author);
         //console.log(req.user.admin); console.log(req.user);

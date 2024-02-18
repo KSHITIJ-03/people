@@ -3,6 +3,9 @@ const router = express.Router({mergeParams : true})
 
 const authController = require("./../controllers/authController")
 const commentController = require("./../controllers/commentController")
+const likeRoutes = require("./likeRoutes")
+
+router.use("/:commentId/likes", likeRoutes)
 
 router.route("/").post(authController.protect, commentController.createComment)
 

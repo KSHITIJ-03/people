@@ -1,6 +1,7 @@
 const Post = require("./../models/postModel")
 const User = require("./../models/userModel")
-
+const Like = require("./../models/likeModel")
+const Comment = require("./../models/commentModel")
 exports.createPost = async(req, res) => {
     try {
 
@@ -31,7 +32,9 @@ exports.deletePost = async(req, res) => {
         //console.log(req.params.postId);
         const post = await Post.findById(req.params.postId)
         const author = post.author
-        console.log(author);
+        //console.log(author);
+        await Comment.deleteMany({post : req.params.postId})
+        await Like.deleteMany({post : req.params.postId})
         await Post.findByIdAndDelete(req.params.postId)
         //console.log(req.params.postId);
         await User.findByIdAndUpdate(author, {$inc :{postCount : -1}}, {runValidators : true})
