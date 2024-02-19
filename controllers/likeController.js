@@ -3,49 +3,33 @@ const Post = require("./../models/postModel")
 
 const {ObjectId} = require("bson")
 
-exports.doLike = async (req, res) => {
-    try {
-        // let like = Like.findOne({post : req.params.postId})
+const AppError = require("../utils/appError")
+const catchAsync = require("./../utils/catchAsync")
 
-        // if(like) {
-        //     like.count = like.count + 1
-        //     like.save()
-        //     return res.status(201).json({
-        //         status : "success",
-        //         message : "like done",
-        //         likesCount : like.count
-        //     })
-        // }
+exports.doLike = catchAsync(async (req, res, next) => {
 
+    const like = await Like.findOne({author : req.user._id.toHexString(), post : req.params.postId})
 
-        const like = await Like.findOne({author : req.user._id.toHexString(), post : req.params.postId})
+    //console.log(like);
 
-        //console.log(like);
-
-        if(like) {
-            await Like.findByIdAndDelete(like._id)
-            const post = await Post.findByIdAndUpdate(req.params.postId, {$inc : {likes : -1}}, {runValidators : true})
-            return res.status(201).json({
-                status : "success",
-                message : "like removed successfully"
-            })
-        }
-        await Like.create({
-            post : req.params.postId, 
-            author : req.user._id
-        })
-        await Post.findByIdAndUpdate(req.params.postId, {$inc : {likes : 1}}, {runValidators : true})
-        res.status(201).json({
+    if(like) {
+        await Like.findByIdAndDelete(like._id)
+        const post = await Post.findByIdAndUpdate(req.params.postId, {$inc : {likes : -1}}, {runValidators : true})
+        return res.status(201).json({
             status : "success",
-            message : "like done"
-        })
-    } catch(err) {
-        res.status(404).json({
-            status : "fail",
-            message : err
+            message : "like removed successfully"
         })
     }
-}
+    await Like.create({
+        post : req.params.postId, 
+        author : req.user._id
+    })
+    await Post.findByIdAndUpdate(req.params.postId, {$inc : {likes : 1}}, {runValidators : true})
+    res.status(201).json({
+        status : "success",
+        message : "like done"
+    })
+})
 
 // exports.removeLike = async (req, res) => {
 //     try {
