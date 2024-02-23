@@ -96,3 +96,20 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
         message : "user deleted"
     })
 })
+
+exports.followUser = catchAsync( async (req, res) => {
+
+    await User.findByIdAndUpdate(req.user._id, {
+        $addToSet : { following : req.params.userId}
+    })
+
+    await User.findByIdAndUpdate(req.params.userId, {
+        $addToSet : {followers : req.user._id}
+    })
+
+    res.status(200).json({
+        status : "success",
+        message : "following user"
+    })
+
+})

@@ -24,4 +24,8 @@ router.route("/updateMe").patch(authController.protect, userController.updateMe)
 router.route("/search").get(userController.searchUsers)
 
 router.route("/me").get(authController.protect, userController.getUser)
+
+// follow
+router.route("/:userId/follow").get(authController.protect, userController.followUser)
+
 module.exports = router
