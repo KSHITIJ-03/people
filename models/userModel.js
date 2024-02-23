@@ -68,6 +68,16 @@ userSchema.virtual("posts", {
     localField : "_id"
 })
 
+//adding virtual fields of count of followers and following
+
+userSchema.virtual("followersCount").get(function(){
+    return this.followers.length
+})
+
+userSchema.virtual("followingCount").get(function(){
+    return this.following.length
+})
+
 // userSchema.pre(/^find/, function(next) {
 //     this.populate("posts");
 //     //this.select("-_id -author")
@@ -114,7 +124,14 @@ userSchema.methods.createPasswordResetToken = function() {
     return resetToken
 }
 
+userSchema.methods.isFollowing = function(userId) {
+    return this.following.includes(userId);
+}
 
+userSchema.statics.getUserFeed = async function(userId) {
+    const users = await this.find({followers : userId}).populate("posts").select("-email")
+    return users
+}
 
 const User = mongoose.model("User", userSchema);
 

@@ -28,4 +28,7 @@ router.route("/me").get(authController.protect, userController.getUser)
 // follow
 router.route("/:userId/follow").get(authController.protect, userController.followUser)
 
+//feed
+router.route("/feed").get(authController.protect, userController.userFeed)
+
 module.exports = router

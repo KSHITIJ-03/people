@@ -99,17 +99,54 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 
 exports.followUser = catchAsync( async (req, res) => {
 
-    await User.findByIdAndUpdate(req.user._id, {
-        $addToSet : { following : req.params.userId}
-    })
+    if(!await User.findById(req.params.userId)) {return new AppError("user not found", 404)}
 
-    await User.findByIdAndUpdate(req.params.userId, {
-        $addToSet : {followers : req.user._id}
-    })
+    const user = await User.findById(req.user._id)
+
+    if(user.isFollowing(req.params.userId)) {
+
+        await User.findByIdAndUpdate(req.user._id, {
+            $pull : { following : req.params.userId}
+        })
+
+        await User.findByIdAndUpdate(req.params.userId, {
+            $pull : { followers : req.user._id}
+        })
+
+        res.status(200).json({
+            status : "success",
+            message : "user unfollowed"
+        })
+    } 
+    
+    else 
+    
+    {
+
+        await User.findByIdAndUpdate(req.user._id, {
+            $addToSet : { following : req.params.userId}
+        })
+    
+        await User.findByIdAndUpdate(req.params.userId, {
+            $addToSet : {followers : req.user._id}
+        })
+    
+        res.status(200).json({
+            status : "success",
+            message : "following user"
+        })
+    }
+
+
+})
+
+exports.userFeed = catchAsync(async(req, res) => {
+
+    const users = await User.getUserFeed(req.user._id)
 
     res.status(200).json({
-        status : "success",
-        message : "following user"
+        status : "sucess",
+        users
     })
 
 })
