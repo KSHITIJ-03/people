@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const postSchema = new mongoose.Schema({
-    name : {
+    content : {
         type : String,
         require : [true, "name of post is required"]
     },

@@ -1,0 +1,12 @@
+extends base
+
+block content
+  .user-list
+    each user in users
+      .user-card
+        .user-link
+          a(href=`/user/${user.username}`) #{user.name}
+        .user-info
+          p.user-followers Followers: #{user.followers.length}
+          p.user-following Following: #{user.following.length}
+          p.user-post-count Posts: #{user.postCount}

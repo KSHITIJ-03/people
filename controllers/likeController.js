@@ -10,7 +10,7 @@ exports.doLike = catchAsync(async (req, res, next) => {
 
     const like = await Like.findOne({author : req.user._id.toHexString(), post : req.params.postId})
 
-    //console.log(like);
+    //console.log(like);users
 
     if(like) {
         await Like.findByIdAndDelete(like._id)

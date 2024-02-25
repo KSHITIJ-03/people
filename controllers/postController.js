@@ -7,11 +7,11 @@ const catchAsync = require("./../utils/catchAsync")
 
 exports.createPost = catchAsync(async(req, res, next) => {
 
-    const name = req.body.name
+    const content = req.body.content
     const tags = req.body.tags
     const author = req.user._id
     const caption = req.body.caption
-    const post = await Post.create({name, tags, author, caption})
+    const post = await Post.create({content, tags, author, caption})
 
     await User.findByIdAndUpdate(author, {$inc :{postCount : 1}}, {runValidators : true})
 

@@ -1,0 +1,10 @@
+header
+  .header-content
+    h1.center PEOPLE
+    nav
+      ul
+        li: a(href='/login') Login
+        li: a(href='/signup') Sign Up
+    form(action='/search', method='GET')
+      input(type='text', placeholder='Search...', name='query')
+      button(type='submit') Search
