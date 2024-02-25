@@ -10,11 +10,21 @@ const catchAsync = require("./../utils/catchAsync")
 const crypto = require("crypto")
 const sendEmail = require("./../utils/email")
 
-const generateToken = (userId) => {
+const generateToken = (userId, res) => {
 
     const token = jwt.sign({id : userId}, process.env.JWT_SECRET, {
             expiresIn : process.env.JWT_EXPIRE
     })
+
+    const cookieOptions = {
+        expires : new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+        httpOnly : true
+    }
+
+    if(process.env.NODE_ENV === "production") {
+        cookieOptions.secure = true
+    }
+    res.cookie("jwt", token, cookieOptions)
 
     return token
 }
@@ -34,7 +44,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         confirmPassword : req.body.confirmPassword
     })
 
-    const token = generateToken(user._id)
+    const token = generateToken(user._id, res)
 
     user.password = undefined
     user.admin = undefined
@@ -53,14 +63,11 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError("provide email and password", 400))
     }
 
-//    if(!await User.findOne({email : req.body.email})) {
-//     return res.status(404).json({
-//         status : "fail",
-//         message : "user do not exist"
-//     })
-//    }
-
     const user = await User.findOne({email : req.body.email}).select("password")
+
+    if (!user) {
+        return next(new AppError("Email or password is invalid", 401));
+    }
 
     const correct = await user.correctPassword(req.body.password, user.password)
 
@@ -68,7 +75,7 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError("email or password is invalid", 401))
     }
 
-    const token = generateToken(user._id)
+    const token = generateToken(user._id, res)
 
     res.status(200).json({
         status : "success",
@@ -81,6 +88,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     let token
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         token = req.headers.authorization.split(" ")[1]
+    } else if(req.cookies.jwt) {
+        token = req.cookies.jwt
     }
 
     if(!token) {
@@ -89,27 +98,39 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     const decoded = verify(token) 
 
-    // if(!decoded) {
-    //     return res.status(400).json({
-    //         status : "fail",
-    //         message : "ivalid token"
-    //     })
-    // }
-    
-    //console.log(decoded)
-
     const freshUser = await User.findById(decoded.id)
 
     if(!freshUser) {
         return next(new AppError("invalid token", 401))
     }
 
-    //console.log(freshUser);
-
     if(freshUser.passwordChange(decoded.iat)) {
         return next(new AppError("user recently change password please login again", 401))
     }
     req.user = freshUser
+    next()
+})
+
+// only for view structure
+
+exports.isLogin = catchAsync(async(req, res, next) => {
+    if(req.cookies.jwt) {
+        let token = req.cookies.jwt
+
+        const decoded = verify(token) 
+
+        const freshUser = await User.findById(decoded.id)
+
+        if(!freshUser) {
+            return next()
+        }
+
+        if(freshUser.passwordChange(decoded.iat)) {
+            return next()
+        }
+        res.locals.loginUser = freshUser
+        return next()
+    }
     next()
 })
 
@@ -125,7 +146,7 @@ exports.updatePassword = catchAsync(async(req, res, next) => {
     freshUser.confirmNewPassword = req.body.confirmNewPassword
     freshUser.save()
 
-    const token = generateToken(req.user._id)
+    const token = generateToken(req.user._id, res)
 
     res.status(200).json({
         status : "success",
@@ -206,7 +227,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     freshUser.passwordResetExpire = undefined
     freshUser.save()
 
-    const token = generateToken(freshUser._id)
+    const token = generateToken(freshUser._id, res)
 
     res.status(200).json({
         status : "success",
@@ -228,21 +249,10 @@ exports.isAuthorOfComment = catchAsync(async (req, res, next) => {
 })
 
 exports.isAuthor = catchAsync(async (req, res, next) => {
-    //console.log("hello"); console.log(req.params.postId);
+    
     const post = await Post.findById(req.params.postId)
 
-    //console.log(post);
-    //console.log(post);
-    //console.log(req.user._id); console.log(post.author);
-    //console.log(req.user.admin); console.log(req.user);
-
-    //console.log(req.user._id.toHexString());
-
-    //console.log(req.user.email);
-
     const user = await User.findOne({email : req.user.email}).select("admin")
-
-    //console.log(user);
 
     if(!post.author.equals(req.user._id) && !user.admin) {
         return next(new AppError("you are not author of this post", 401))

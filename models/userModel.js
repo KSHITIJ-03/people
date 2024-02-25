@@ -76,10 +76,12 @@ userSchema.virtual("posts", {
 //adding virtual fields of count of followers and following
 
 userSchema.virtual("followersCount").get(function(){
+    if(!followers) return 0
     return this.followers.length
 })
 
 userSchema.virtual("followingCount").get(function(){
+    if(!following) return 0
     return this.following.length
 })
 

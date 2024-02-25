@@ -2,7 +2,7 @@ const express = require("express")
 const morgan = require("morgan")
 const app = express()
 const path = require("path")
-
+const cookieParser = require("cookie-parser")
 
 const userRouter = require("./routes/userRoutes")
 const postRouter = require("./routes/postRoutes")
@@ -19,14 +19,19 @@ app.set("views", path.join(__dirname, "views"))
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use(express.json())
+app.use(cookieParser())
 app.use(morgan("dev"))
+
+app.use((req, res, next) => {
+    console.log(req.cookies);
+    next()
+})
 
 app.use("/", viewRouter)
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/posts", postRouter)
 app.use("/api/v1/comments", commentRouter)
-
 
 app.all("*", (req, res, next) => {
     next(new appError(`can't find ${req.originalUrl} on this server`, 404))
@@ -35,6 +40,7 @@ app.all("*", (req, res, next) => {
 app.use(errorController)
 
 app.get("/", (req, res) => {
+    console.log(req.cookies);
     res.send("hello from the server")
 })
 

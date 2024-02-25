@@ -3,12 +3,12 @@ extends base
 block content 
     .form-container
         h2.form-title Login
-        form.form-login(action='/login', method='POST')
+        form.form-login
             .form-group
                 label(for='email') Email:
                 input(type='email', name='email', id='email', required)
             .form-group
                 label(for='password') Password:
                 input(type='password', name='password', id='password', required)
-            button.btn-submit(type='submit') Login
+            button.btn-submit Login
 
