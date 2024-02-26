@@ -3,10 +3,16 @@ const viewController = require("./../controllers/viewController")
 const authController = require("./../controllers/authController")
 const router = express.Router()
 
-router.use(authController.isLogin)
+//router.use(authController.isLogin)
 
-router.route("/overview").get(viewController.getAllUsers)
-router.route("/user/:username").get(authController.protect, viewController.getUser)
+router.route("/users").get(authController.isLogin, authController.protect, viewController.getAllUsers)
+
+router.route("/user/:username").get(authController.isLogin, authController.protect, viewController.getUser)
+
 router.route("/login").get(viewController.login)
+
 router.route("/signup").get(viewController.signup)
+
+router.route("/me").get(authController.protect, viewController.getMe)
+
 module.exports = router

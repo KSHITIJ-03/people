@@ -5,7 +5,7 @@ header
       ul
         if loginUser
           li
-            span= loginUser.name
+            a(href='/me') #{loginUser.name}
           li
             button.logout-btn(type='button') Log out
         else 

@@ -48,7 +48,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
         return next(new AppError("password do not update here", 400))
     }
-    const user = await User.findOneAndUpdate({email : req.user.email}, {email : req.body.email}, {
+    const user = await User.findOneAndUpdate({email : req.user.email}, {name : req.body.name, username : req.body.username}, {
         new : true,
         runValidators : true
     })

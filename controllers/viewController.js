@@ -14,7 +14,7 @@ exports.getUser = catchAsync(async(req, res, next) => {
 
     const user = await User.findOne({username : req.params.username}).populate("posts")
     res.status(200).render("user", {
-        title : user.name,
+        title : user.username,
         user
     })
 })
@@ -30,5 +30,15 @@ exports.signup = catchAsync(async(req, res, next) => {
     
     res.status(200).render("signup", {
         title : "sign up"
+    })
+})
+
+exports.getMe = catchAsync(async(req, res, next) => {
+
+    const user = await User.findOne({username : res.locals.loginUser.username}).populate("posts")
+
+    res.status(200).render("account", {
+        title : user.username,
+        user
     })
 })

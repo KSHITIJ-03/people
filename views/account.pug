@@ -1,0 +1,31 @@
+extends base
+
+block content
+    .user-profile
+        h2
+            | #{user.name}
+        span.profile-info
+            | Posts: #{user.postCount} 
+            | Following: #{user.following.length} 
+            | Followers: #{user.followers.length}
+
+    .user-posts
+        h3 posts
+        each post in user.posts
+            .post
+                .post-content
+                    p= post.content
+                .post-info
+                    span
+                        | &#x2665; : #{post.likes}    
+                        | &#x1F4AC; : #{post.comments}
+
+    //- Form for updating user information
+    form.form-updateUser
+        div.form-group
+            label(for='name') Name:
+            input(type='text', name='name', id='name', value=user.name, required)
+        div.form-group
+            label(for='username') Username:
+            input(type='text', name='username', id='username', value=user.username, required)
+        button.btn-submit Save Changes
