@@ -23,7 +23,7 @@ app.use(cookieParser())
 app.use(morgan("dev"))
 
 app.use((req, res, next) => {
-    console.log(req.cookies);
+    //console.log(req.cookies);
     next()
 })
 
@@ -38,10 +38,5 @@ app.all("*", (req, res, next) => {
 })
 
 app.use(errorController)
-
-app.get("/", (req, res) => {
-    console.log(req.cookies);
-    res.send("hello from the server")
-})
 
 module.exports = app

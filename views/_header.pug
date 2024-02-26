@@ -4,8 +4,10 @@ header
     nav
       ul
         if loginUser
-          span= loginUser.name
-          li: a(href='/signup') Log out
+          li
+            span= loginUser.name
+          li
+            button.logout-btn(type='button') Log out
         else 
           li: a(href='/login') Login
           li: a(href='/signup') Sign Up

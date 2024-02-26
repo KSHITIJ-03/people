@@ -3,17 +3,20 @@ extends base
 block content 
     .form-container
         h2.form-title Sign up
-        form.form-signup(action='/signup', method='POST')
+        form.form-signup
             .form-group
-                label(for='email') Email:
-                input(type='email', name='email', id='email', required)
+                label(for='name') Name:
+                input(type='text', name='name', id='name', required)
             .form-group
                 label(for='username') Username:
                 input(type='text', name='username', id='username', required)
+            .form-group
+                label(for='email') Email:
+                input(type='email', name='email', id='email', required)
             .form-group
                 label(for='password') Password:
                 input(type='password', name='password', id='password', required)
             .form-group
                 label(for='confirmPassword') Confirm Password:
                 input(type='password', name='confirmPassword', id='confirmPassword', required)
-            button.btn-submit(type='submit') Sign up
+            button.btn-submit Sign up

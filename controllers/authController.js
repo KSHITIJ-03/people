@@ -84,6 +84,20 @@ exports.login = catchAsync(async (req, res, next) => {
     })
 })
 
+exports.logout = async(req, res) => {
+    try {
+        res.cookie("jwt", "userLogout", {
+            expires : new Date(Date.now() + 10 * 1000), httpOnly : true
+        })
+
+        res.status(200).json({
+            status : "success"
+        })
+    } catch(err) {
+        console.log(err);
+    }
+}
+
 exports.protect = catchAsync(async (req, res, next) => {
     let token
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -113,26 +127,31 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 // only for view structure
 
-exports.isLogin = catchAsync(async(req, res, next) => {
+exports.isLogin = async(req, res, next) => {
     if(req.cookies.jwt) {
-        let token = req.cookies.jwt
+        try{
 
-        const decoded = verify(token) 
-
-        const freshUser = await User.findById(decoded.id)
-
-        if(!freshUser) {
+            let token = req.cookies.jwt
+    
+            const decoded = verify(token) 
+    
+            const freshUser = await User.findById(decoded.id)
+    
+            if(!freshUser) {
+                return next()
+            }
+    
+            if(freshUser.passwordChange(decoded.iat)) {
+                return next()
+            }
+            res.locals.loginUser = freshUser
+            return next()
+        } catch(err) {
             return next()
         }
-
-        if(freshUser.passwordChange(decoded.iat)) {
-            return next()
-        }
-        res.locals.loginUser = freshUser
-        return next()
     }
     next()
-})
+}
 
 exports.updatePassword = catchAsync(async(req, res, next) => {
 

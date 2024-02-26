@@ -23,7 +23,7 @@ exports.searchUsers = catchAsync( async (req, res, next) => {
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
 
-    const users = User.find()
+    const users = await User.find()
     res.status(200).json({
         status : "success",
         count : users.length,
