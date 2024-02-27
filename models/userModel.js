@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
         required : [true, "username is required"],
         unique : [true, "username should be unique"]
     },
+    displayPhoto : {
+        type : String
+    },
     email: {
         type: String,
         required: [true, "Email is required"],

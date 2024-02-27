@@ -162,6 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const formSignup = document.querySelector(".form-signup");
     const formLogin = document.querySelector(".form-login");
     const formUpdateUser = document.querySelector(".form-updateUser");
+    const formPasswordUpdate = document.querySelector(".form-updatePassword")
+
+    if(formPasswordUpdate) {
+        formPasswordUpdate.addEventListener("submit", updatePasswordHandler)
+    }
 
     if (logOutButton) {
         logOutButton.addEventListener("click", logout);
@@ -179,6 +184,14 @@ document.addEventListener("DOMContentLoaded", () => {
         formUpdateUser.addEventListener("submit", updateUserHandler);
     }
 });
+
+const updatePasswordHandler = async(e) => {
+    e.preventDefault();
+    const oldPassword = document.getElementById("old-password").value
+    const newPassword = document.getElementById("new-password").value
+    const confirmPassword = document.getElementById("confirm-password").value
+    updatePassword(oldPassword, newPassword, confirmPassword)
+}
 
 const signupHandler = async (e) => {
     e.preventDefault();
@@ -267,6 +280,30 @@ const updateUser = async(name, username) => {
 
         if(res.data.status === "success") {
             location.reload(true)
+        }
+    } catch(err) {
+        alert(err.response.data.message)
+    }
+}
+
+const updatePassword = async(oldPassword, newPassword, confirmPassword) => {
+    try {
+        if(newPassword != confirmPassword) {
+            alert("new password and confirm password are not same")
+            location.reload(true)
+            return
+        }
+        const res = await axios({
+            method : "POST",
+            url : "http://localhost:3000/api/v1/users/updatePassword",
+            data : {oldPassword, newPassword, confirmPassword}
+        })
+
+        if(res.data.status === "success") {
+            alert("password updated")
+            window.setTimeout(() => {
+                location.assign("/me")
+            }, 1000)
         }
     } catch(err) {
         alert(err.response.data.message)

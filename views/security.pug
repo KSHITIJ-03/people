@@ -1,0 +1,16 @@
+extends base
+
+block content
+    //- Form for updating user information
+    .update-password-form-container
+        form.form-updatePassword
+            div.form-group
+                label(for='old-password') Old Password:
+                input(type='password', name='old-password', id='old-password', required)
+            div.form-group
+                label(for='new-password') New Password:
+                input(type='password', name='new-password', id='new-password', required)
+            div.form-group
+                label(for='confirm-password') Confirm Password:
+                input(type='password', name='confirm-password', id='confirm-password', required)
+            button.btn-submit Update Password

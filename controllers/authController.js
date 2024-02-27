@@ -162,9 +162,16 @@ exports.updatePassword = catchAsync(async(req, res, next) => {
         return next(new AppError("old password is incorrect", 401))
     }
 
+    // if(req.body.newPassword != req.body.confirmNewPassword) {
+    //     return next(new AppError("new password and confirm password are not same", 400))
+    // }
+
     freshUser.password = req.body.newPassword
     freshUser.confirmNewPassword = req.body.confirmNewPassword
-    freshUser.save()
+
+    //await freshUser.validate()
+
+    await freshUser.save()
 
     const token = generateToken(req.user._id, res)
 

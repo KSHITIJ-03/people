@@ -197,3 +197,8 @@ button.btn-submit:hover {
 }
 
 
+/*------------------- security.pug update password css -----------------------------*/
+
+.update-password-form-container {
+    margin-top: 150px; /* Adjust the margin top as needed */
+}

@@ -1,6 +1,10 @@
 header
   .header-content
-    h1.center PEOPLE 
+    h1.center 
+      if loginUser 
+        a(href='/users') PEOPLE
+      else 
+        a(href='/login') PEOPLE
     nav
       ul
         if loginUser

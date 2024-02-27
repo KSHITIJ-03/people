@@ -15,4 +15,6 @@ router.route("/signup").get(viewController.signup)
 
 router.route("/me").get(authController.protect, viewController.getMe)
 
+router.route("/password-and-security").get(authController.protect, viewController.passwordAndSecurity)
+
 module.exports = router

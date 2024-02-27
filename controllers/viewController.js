@@ -42,3 +42,10 @@ exports.getMe = catchAsync(async(req, res, next) => {
         user
     })
 })
+
+exports.passwordAndSecurity = catchAsync(async(req, res, next) => {
+
+    res.status(200).render("security", {
+        title : "security settings"
+    })
+})
