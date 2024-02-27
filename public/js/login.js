@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formLogin = document.querySelector(".form-login");
     const formUpdateUser = document.querySelector(".form-updateUser");
     const formPasswordUpdate = document.querySelector(".form-updatePassword")
-
+    
     if(formPasswordUpdate) {
         formPasswordUpdate.addEventListener("submit", updatePasswordHandler)
     }
@@ -183,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (formUpdateUser) {
         formUpdateUser.addEventListener("submit", updateUserHandler);
     }
+
 });
 
 const updatePasswordHandler = async(e) => {
@@ -214,7 +215,14 @@ const updateUserHandler = async (e) => {
     e.preventDefault();
     const username = document.getElementById("username").value;
     const name = document.getElementById("name").value;
-    updateUser(name, username);
+    const displayPhoto = document.getElementById("displayPhoto").files[0]
+    //console.log(name);
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('name', name);
+    formData.append('displayPhoto', displayPhoto);
+
+    updateUser(formData)
 };
 
 const logout = async () => {
@@ -270,12 +278,12 @@ const login = async (email, password) => {
     }
 }
 
-const updateUser = async(name, username) => {
+const updateUser = async(data) => {
     try {
         const res = await axios({
             method : "PATCH",
             url : "http://localhost:3000/api/v1/users/updateMe",
-            data : {name, username}
+            data
         })
 
         if(res.data.status === "success") {

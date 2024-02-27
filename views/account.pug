@@ -28,6 +28,12 @@ block content
         div.form-group
             label(for='username') Username:
             input(type='text', name='username', id='username', value=user.username, required)
+        div.form-group.form__photo-upload
+            label(for='displayPhoto') Display Picture:
+            //- Added CSS classes for circular display photo
+            .form__user-photo-container
+                img.form__user-photo(src=`/img/users/${user.displayPhoto}`, alt="user photo")
+            input(type='file', accept='image/*' name='displayPhoto', id='displayPhoto')
         button.btn-submit Save Changes
 
     //- Link for Password and Security

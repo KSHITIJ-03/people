@@ -130,4 +130,9 @@ dist
 .pnp.*
 
 # ignoring config.env file
+
+*.jpg
+*.png
+*.jpeg
+
 config.env

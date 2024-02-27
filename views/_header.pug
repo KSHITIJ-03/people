@@ -10,6 +10,9 @@ header
         if loginUser
           li
             a(href='/me') #{loginUser.name}
+            // Circular display photo container
+            .form__user-photo-container
+              img.form__user-photo(src=`/img/users/${loginUser.displayPhoto}`, alt="user photo")
           li
             button.logout-btn(type='button') Log out
         else 

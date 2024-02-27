@@ -6,6 +6,8 @@ block content
       .user-card
         .user-link
           a(href=`/user/${user.username}`) #{user.name}
+          .form__user-photo-container
+              img.form__user-photo(src=`/img/users/${user.displayPhoto}`, alt="user photo")
         .user-info
           p.user-followers Followers: #{user.followers.length}
           p.user-following Following: #{user.following.length}
