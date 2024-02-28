@@ -1,0 +1,32 @@
+extends base
+
+block content
+    .user-profile
+        h2
+            | #{loginUser.name}
+        span.profile-info
+            | Posts: #{loginUser.postCount} 
+            | Following: #{loginUser.following.length} 
+            | Followers: #{loginUser.followers.length}
+
+    .user-posts
+        h3 posts
+        each post in loginUser.posts
+            .post
+                .post-content
+                    p= post.content
+                .post-info
+                    span
+                        | &#x2665; : #{post.likes}    
+                        | &#x1F4AC; : #{post.comments}
+
+    //- Form for updating user information
+    form.form-updateUser
+        div.form-group
+            label(for='caption') Caption:
+            input(type='text', name='caption', id='caption')
+        div.form-group
+            label(for='photo') photo:
+            input(type='file', name='photo', id='photo', accept='image/*')
+        button.btn-submit Post
+

@@ -15,6 +15,8 @@ header
               img.form__user-photo(src=`/img/users/${loginUser.displayPhoto}`, alt="user photo")
           li
             button.logout-btn(type='button') Log out
+          li
+            a(href='/createPost') Create Post
         else 
           li: a(href='/login') Login
           li: a(href='/signup') Sign Up

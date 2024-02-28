@@ -112,7 +112,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     const decoded = verify(token) 
 
-    const freshUser = await User.findById(decoded.id)
+    const freshUser = await User.findById(decoded.id)//.populate("posts")
 
     if(!freshUser) {
         return next(new AppError("invalid token", 401))

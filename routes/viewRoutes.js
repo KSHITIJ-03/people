@@ -17,4 +17,6 @@ router.route("/me").get(authController.protect, viewController.getMe)
 
 router.route("/password-and-security").get(authController.protect, viewController.passwordAndSecurity)
 
+router.route("/createPost").get(authController.protect, viewController.createPost)
+
 module.exports = router

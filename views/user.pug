@@ -12,10 +12,10 @@ block content
     .user-posts
         h3 posts
         each post in user.posts
-            .post
+            .post(data-post-id=post._id)
                 .post-content
                     p= post.content
                 .post-info
                     span
-                        | &#x2665; : #{post.likes}    
-                        | &#x1F4AC; : #{post.comments}
+                        button.like-btn(type='button') &#x2665; : #{post.likes}    
+                        button.comment-btn(type='button') &#x1F4AC; : #{post.comments}

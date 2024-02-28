@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formLogin = document.querySelector(".form-login");
     const formUpdateUser = document.querySelector(".form-updateUser");
     const formPasswordUpdate = document.querySelector(".form-updatePassword")
-    
+    const likeButtons = document.querySelectorAll(".like-btn")
     if(formPasswordUpdate) {
         formPasswordUpdate.addEventListener("submit", updatePasswordHandler)
     }
@@ -183,6 +183,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (formUpdateUser) {
         formUpdateUser.addEventListener("submit", updateUserHandler);
     }
+
+    // if(likeButtons) {
+    //     likeButtons.forEach(button => {
+    //         button.addEventListener("click", likeHandler(button))
+    //     })
+    // }
 
 });
 
@@ -224,6 +230,45 @@ const updateUserHandler = async (e) => {
 
     updateUser(formData)
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+    const likeButtons = document.querySelectorAll(".like-btn");
+
+    likeButtons.forEach(button => {
+        button.addEventListener("click", async () => {
+            const postId = button.closest(".post").dataset.postId; // Retrieve post ID
+            try {
+                const res = await axios.post(`http://localhost:3000/api/v1/posts/${postId}/likes`);
+                if (res.data.status === "success") {
+                    location.reload(true); // Reload page after successful like
+                }
+            } catch(err) {
+                console.error("Error:", err);
+            }
+        });
+    });
+});
+
+
+// const likeHandler = async (button) => {
+//     const postId = button.closest(".post").dataset.postId;
+//     like(postId)
+// }
+
+// const like = async(postId) => {
+//     try{
+//         console.log(user.post);
+//         const res = await axios({
+//             method : "POST",
+//             url : `http:localhost:3000/api/v1/posts/${postId}/likes`
+//         });
+//         if(res.data.status === "success") {
+//             location.reload(true)
+//         }
+//     } catch(err) {
+//         alert("someting went wrong")
+//     }
+// }
 
 const logout = async () => {
     try {

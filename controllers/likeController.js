@@ -25,10 +25,12 @@ exports.doLike = catchAsync(async (req, res, next) => {
         author : req.user._id
     })
     await Post.findByIdAndUpdate(req.params.postId, {$inc : {likes : 1}}, {runValidators : true})
-    res.status(201).json({
+    return res.status(201).json({
         status : "success",
         message : "like done"
     })
+
+    return next(new AppError("something went wrong"), 500)
 })
 
 // exports.removeLike = async (req, res) => {

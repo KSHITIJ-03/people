@@ -49,3 +49,10 @@ exports.passwordAndSecurity = catchAsync(async(req, res, next) => {
         title : "security settings"
     })
 })
+
+exports.createPost = catchAsync(async(req, res, next) => {
+
+    res.status(200).render("compose", {
+        title : "compose"
+    })
+})
