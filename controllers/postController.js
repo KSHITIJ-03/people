@@ -4,14 +4,22 @@ const Like = require("./../models/likeModel")
 const Comment = require("./../models/commentModel")
 const AppError = require("../utils/appError")
 const catchAsync = require("./../utils/catchAsync")
+const multer = require("multer")
+const sharp = require("sharp")
 
 exports.createPost = catchAsync(async(req, res, next) => {
+
+    let photo
+
+    if(req.file) {
+        photo = req.file.filename
+    }
 
     const content = req.body.content
     const tags = req.body.tags
     const author = req.user._id
     const caption = req.body.caption
-    const post = await Post.create({content, tags, author, caption})
+    const post = await Post.create({content, tags, author, caption, photo})
 
     await User.findByIdAndUpdate(author, {$inc :{postCount : 1}}, {runValidators : true})
 

@@ -14,6 +14,7 @@ exports.doLike = catchAsync(async (req, res, next) => {
 
     if(like) {
         await Like.findByIdAndDelete(like._id)
+        // res.locals.isLike = {islike : false}
         const post = await Post.findByIdAndUpdate(req.params.postId, {$inc : {likes : -1}}, {runValidators : true})
         return res.status(201).json({
             status : "success",
@@ -24,6 +25,7 @@ exports.doLike = catchAsync(async (req, res, next) => {
         post : req.params.postId, 
         author : req.user._id
     })
+    //res.locals.isLike = {isLike : true}
     await Post.findByIdAndUpdate(req.params.postId, {$inc : {likes : 1}}, {runValidators : true})
     return res.status(201).json({
         status : "success",

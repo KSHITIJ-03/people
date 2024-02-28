@@ -1,6 +1,9 @@
 const mongoose = require("mongoose")
 
 const postSchema = new mongoose.Schema({
+    photo : {
+        type : String
+    },
     content : {
         type : String,
         require : [true, "name of post is required"]

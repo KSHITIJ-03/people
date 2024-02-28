@@ -3,22 +3,37 @@ extends base
 block content
     .user-profile
         h2
-            | #{user.name}
+            | #{loginUser.name}
         span.profile-info
-            | Posts: #{user.postCount} 
-            | Following: #{user.following.length} 
-            | Followers: #{user.followers.length}
+            | Posts: #{loginUser.postCount} 
+            | Following: #{loginUser.following.length} 
+            | Followers: #{loginUser.followers.length}
 
     .user-posts
-        h3 posts
-        each post in user.posts
-            .post
-                .post-content
-                    p= post.content
-                .post-info
-                    span
-                        | &#x2665; : #{post.likes}    
-                        | &#x1F4AC; : #{post.comments}
+        h3.posts-heading Posts
+        each post in user.posts.reverse()
+            .post(data-post-id=post._id)
+                //- Post content
+                if post.content
+                    .post-content= post.content
+                
+                //- Post photo
+                if post.photo
+                    .post-photo
+                        img(src=`/img/users/${post.photo}`, alt="post-photo")
+                
+                //- Post caption
+                if post.caption 
+                    .post-caption= post.caption
+                
+                //- Post actions
+                .post-actions
+                    //- Like button with conditional class
+                    button.like-btn(type='button', class=post.liked ? 'liked' : '') Like &#x2665; : #{post.likes}
+                    
+                    //- Comment button with conditional class
+                    button.comment-btn(type='button') Comment &#x1F4AC; : #{post.comments}
+
 
     //- Form for updating user information
     form.form-updateUser
