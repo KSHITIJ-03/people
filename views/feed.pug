@@ -1,4 +1,36 @@
 extends base
 
 block content 
-    h1 this is feed page
+    h3 feed
+
+    .user-posts
+        each post in posts
+            .post(data-post-id=post._id)
+                //- User display photo and username container
+                .user-info-container
+                    //- User display photo
+                    img.user-display-photo.small-profile(src=`/img/users/${post.author.displayPhoto}`, alt="user-display-photo")
+                    
+                    //- User name
+                    p.user-name= post.author.username
+                
+                //- Post content
+                if post.content
+                    .post-content= post.content
+                
+                //- Post photo
+                if post.photo
+                    .post-photo
+                        img(src=`/img/users/${post.photo}`, alt="post-photo")
+                
+                //- Post caption
+                if post.caption 
+                    .post-caption= post.caption
+                
+                //- Post actions
+                .post-actions
+                    //- Like button with conditional class
+                    button.like-btn(type='button', class=post.liked ? 'liked' : '') Like &#x2665; : #{post.likes}
+                    
+                    //- Comment button with conditional class
+                    button.comment-btn(type='button') Comment &#x1F4AC; : #{post.comments}

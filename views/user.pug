@@ -4,6 +4,8 @@ block content
     .user-profile
         h2
             | #{user.name}
+        .form__user-photo-container
+            img.form__user-photo(src=`/img/users/${user.displayPhoto}`, alt="user photo")
         span.profile-info
             | Posts: #{user.postCount} 
             | Following: #{user.following.length} 

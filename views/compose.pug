@@ -22,10 +22,8 @@ block content
             input(type='text', name='content', id='content')
         button.btn-submit Post
 
-    //- Container for user posts
-    .user-posts
-        h3.posts-heading Posts
-        each post in user.posts.reverse()
+    h3.posts-heading Posts
+        each post in loginUser.posts.reverse()
             .post(data-post-id=post._id)
                 //- Post content
                 if post.content

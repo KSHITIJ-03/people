@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const User = require("./../models/userModel")
+const Post = require("./../models/postModel")
 
 exports.getAllUsers = catchAsync(async(req, res, next) => {
 
@@ -51,8 +52,18 @@ exports.passwordAndSecurity = catchAsync(async(req, res, next) => {
 })
 
 exports.createPost = catchAsync(async(req, res, next) => {
-
     res.status(200).render("compose", {
         title : "compose"
+    })
+})
+
+exports.feed = catchAsync(async(req, res, next) => {
+    const posts = await Post.find().sort({createdAt : -1}).populate({
+        path : "author",
+        select : "displayPhoto username _id"
+    })
+    res.status(200).render("feed", {
+        title : "feed",
+        posts
     })
 })
