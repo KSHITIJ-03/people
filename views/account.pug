@@ -8,6 +8,24 @@ block content
             | Posts: #{loginUser.postCount} 
             | Following: #{loginUser.following.length} 
             | Followers: #{loginUser.followers.length}
+    //- Form for updating user information
+    form.form-updateUser
+        div.form-group
+            label(for='name') Name:
+            input(type='text', name='name', id='name', value=user.name, required)
+        div.form-group
+            label(for='username') Username:
+            input(type='text', name='username', id='username', value=user.username, required)
+        div.form-group.form__photo-upload
+            label(for='displayPhoto') Display Picture:
+            //- Added CSS classes for circular display photo
+            .form__user-photo-container
+                img.form__user-photo(src=`/img/users/${user.displayPhoto}`, alt="user photo")
+            input(type='file', accept='image/*' name='displayPhoto', id='displayPhoto')
+        button.btn-submit Save Changes
+
+    //- Link for Password and Security
+    a(href='/password-and-security') Password and Security
 
     .user-posts
         h3.posts-heading Posts
@@ -30,27 +48,14 @@ block content
                 
                 //- Post actions
                 .post-actions
-                    //- Like button with conditional class
                     button.like-btn(type='button', class=post.liked ? 'liked' : '') Like &#x2665; : #{post.likes}
-                    
-                    //- Comment button with conditional class
-                    button.comment-btn(type='button') Comment &#x1F4AC; : #{post.comments}
+                    button.comment-btn(type='button', data-post-id=post._id) Comment &#x1F4AC; : #{post.comments}
 
-    //- Form for updating user information
-    form.form-updateUser
-        div.form-group
-            label(for='name') Name:
-            input(type='text', name='name', id='name', value=user.name, required)
-        div.form-group
-            label(for='username') Username:
-            input(type='text', name='username', id='username', value=user.username, required)
-        div.form-group.form__photo-upload
-            label(for='displayPhoto') Display Picture:
-            //- Added CSS classes for circular display photo
-            .form__user-photo-container
-                img.form__user-photo(src=`/img/users/${user.displayPhoto}`, alt="user photo")
-            input(type='file', accept='image/*' name='displayPhoto', id='displayPhoto')
-        button.btn-submit Save Changes
+                //- Comment section
+                .comment-section.hidden(data-post-id=post._id)
+                    //- Add a form to submit comments
+                    form.comment-form
+                        input(type='text', placeholder='Add a comment...', name='comment-text')
+                        button.comment-submit-btn(type='submit') Post
 
-    //- Link for Password and Security
-    a(href='/password-and-security') Password and Security
+    

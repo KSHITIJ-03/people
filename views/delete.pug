@@ -1,0 +1,10 @@
+extends base
+
+block content 
+    p Deleting your account will permanently remove all data, including profile info, posts, and connections. This action cannot be undone. Confirm by entering your password below. Proceeding acknowledges understanding and acceptance of consequences.
+    .update-password-form-container
+    form.form-deleteAccount
+        div.form-group
+            label(for='old-password') Password:
+            input(type='password', name='old-password', id='password', required)
+        button.btn-submit Delete Account

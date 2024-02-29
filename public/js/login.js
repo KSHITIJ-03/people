@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const formPasswordUpdate = document.querySelector(".form-updatePassword")
     const likeButtons = document.querySelectorAll(".like-btn")
     const formCreatePost = document.querySelector(".form-createPost")
+    const formDeleteAccount = document.querySelector(".form-deleteAccount")
+
     if(formPasswordUpdate) {
         formPasswordUpdate.addEventListener("submit", updatePasswordHandler)
     }
@@ -30,6 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
         formCreatePost.addEventListener("submit", createPostHandler)
     }
 
+    if(formDeleteAccount) {
+        formDeleteAccount.addEventListener("submit", deleteAccountHandler)
+    }
 });
 
 const updatePasswordHandler = async(e) => {
@@ -84,6 +89,26 @@ const createPostHandler = async (e) => {
     formData.append("content", content)
 
     createPost(formData)
+}
+
+const deleteAccountHandler = async (e) => {
+    e.preventDefault()
+    const password = document.getElementById("password").value
+    deleteAccount(password)
+}
+
+const deleteAccount = async (password) => {
+    try {
+        const res = await axios({
+            method: "DELETE",
+            url: "http://localhost:3000/api/v1/users/deleteMe",
+            data : {password}
+        });
+        alert("account deleted")
+        location.assign("/login");
+    } catch (err) {
+        alert(err.response.data.message)
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -273,3 +298,49 @@ const deletePost = async(postId) => {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all comment buttons
+    var commentButtons = document.querySelectorAll('.comment-btn');
+
+    // Add click event listener to each comment button
+    commentButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var postId = this.getAttribute('data-post-id');
+            var commentSection = document.querySelector('.comment-section[data-post-id="' + postId + '"]');
+            if (commentSection.classList.contains('hidden')) {
+                commentSection.classList.remove('hidden');
+            } else {
+                commentSection.classList.add('hidden');
+            }
+        });
+    });
+
+    // Get all comment forms
+    var commentForms = document.querySelectorAll('.comment-form');
+
+    // Add submit event listener to each comment form
+    commentForms.forEach(function(form) {
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const postId = this.closest('.post').getAttribute('data-post-id');
+            const comment = this.querySelector('input[name="comment-text"]').value;
+            //console.log(comment);
+            try {
+                const res = await axios({
+                    method : "POST",
+                    url : `http://localhost:3000/api/v1/posts/${postId}/comments`,
+                    data : {comment}
+                })
+                if(res.data.status === "success") {
+                    alert("comment posted")
+                    location.reload(true)
+                }
+            } catch(err) {
+                console.log("Error: ", err);
+            }
+            console.log('Comment submitted for post ID:', postId, 'Text:', comment);
+            // Clear the input field
+            this.querySelector('input[name="comment-text"]').value = '';
+        });
+    });
+});

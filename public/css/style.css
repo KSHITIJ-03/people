@@ -354,3 +354,33 @@ button.btn-submit:hover {
     right: 10px;
     /* Add any additional styling as needed */
 }
+ /*------------------------ for comment section ------------------*/
+
+ /* CSS to hide the comment section by default */
+.comment-section.hidden {
+    display: none;
+}
+
+/* CSS for comment section */
+.comment-section {
+    margin-top: 10px;
+}
+
+/* CSS for comment form */
+.comment-form {
+    margin-top: 10px;
+}
+
+.comment-form input[type='text'] {
+    width: calc(100% - 80px); /* Adjust width as needed */
+    padding: 5px;
+}
+
+.comment-form button[type='submit'] {
+    width: 70px;
+    padding: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}

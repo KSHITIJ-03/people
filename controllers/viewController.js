@@ -67,3 +67,9 @@ exports.feed = catchAsync(async(req, res, next) => {
         posts
     })
 })
+
+exports.delete = catchAsync(async(req, res, next) => {
+    res.status(200).render("delete", {
+        title : "Delete Account"
+    })
+})

@@ -11,7 +11,7 @@ block content
             | Following: #{user.following.length} 
             | Followers: #{user.followers.length}
 
-    //- Container for user posts
+    //-Container for user posts
     .user-posts
         h3.posts-heading Posts
         each post in user.posts.reverse()
@@ -31,8 +31,14 @@ block content
                 
                 //- Post actions
                 .post-actions
-                    //- Like button with conditional class
                     button.like-btn(type='button', class=post.liked ? 'liked' : '') Like &#x2665; : #{post.likes}
-                    
-                    //- Comment button with conditional class
-                    button.comment-btn(type='button') Comment &#x1F4AC; : #{post.comments}
+                    button.comment-btn(type='button', data-post-id=post._id) Comment &#x1F4AC; : #{post.comments}
+
+                //- Comment section
+                .comment-section.hidden(data-post-id=post._id)
+                    //- Add a form to submit comments
+                    form.comment-form
+                        input(type='text', placeholder='Add a comment...', name='comment-text')
+                        button.comment-submit-btn(type='submit') Post
+
+

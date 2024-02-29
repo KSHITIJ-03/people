@@ -21,4 +21,6 @@ router.route("/createPost").get(authController.protect, viewController.createPos
 
 router.route("/feed").get(authController.protect, viewController.feed)
 
+router.route("/delete").get(authController.protect, viewController.delete)
+
 module.exports = router
