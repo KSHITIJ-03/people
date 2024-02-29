@@ -13,6 +13,8 @@ block content
         h3.posts-heading Posts
         each post in user.posts.reverse()
             .post(data-post-id=post._id)
+                //- Delete button
+                button.delete-button(type='button' class='delete-btn') Delete
                 //- Post content
                 if post.content
                     .post-content= post.content
@@ -33,7 +35,6 @@ block content
                     
                     //- Comment button with conditional class
                     button.comment-btn(type='button') Comment &#x1F4AC; : #{post.comments}
-
 
     //- Form for updating user information
     form.form-updateUser

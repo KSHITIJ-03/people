@@ -25,6 +25,7 @@ block content
     h3.posts-heading Posts
         each post in loginUser.posts.reverse()
             .post(data-post-id=post._id)
+                button.delete-button(type='button' class='delete-btn') Delete
                 //- Post content
                 if post.content
                     .post-content= post.content

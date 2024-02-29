@@ -104,6 +104,48 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// document.addEventListener("DOMContentLoaded", () => {
+//     const deletePostButtons = document.querySelectorAll(".delete-btn");
+
+//     deletePostButtons.forEach(button => {
+//         button.addEventListener("click", async () => {
+//             const postId = button.closest(".post").dataset.postId; // Retrieve post ID
+//             try {
+//                 const res = await axios({
+//                     method : "DELETE",
+//                     url : `http://localhost:3000/api/v1/posts/deletePost/${postId}`
+//                 })
+//                 if(res.data.status === "success") {
+//                     location.reload(true);
+//                 }
+//             } catch(err) {
+//                 console.log("Error :", err);
+//             }
+//         });
+//     });
+// });
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("click", async (event) => {
+        if (event.target.matches(".delete-btn")) {
+            const button = event.target;
+            const postId = button.closest(".post").dataset.postId; // Retrieve post ID
+            try {
+                const res = await axios({
+                    method : "DELETE",
+                    url : `http://localhost:3000/api/v1/posts/deletePost/${postId}`
+                });
+                alert("post deleted")
+                console.log(res);
+                location.reload(true)
+            } catch (err) {
+                console.log("Error:", err);
+            }
+        }
+    });
+});
+
+
 const logout = async () => {
     try {
         const res = await axios({
@@ -214,3 +256,20 @@ const createPost = async (data) => {
         console.error("Error:", err);
     }
 }
+
+const deletePost = async(postId) => {
+    try {
+        const res = await axios({
+            method : "DELETE",
+            url : `http://localhost:3000/api/v1/posts/deletePost/${postId}`
+        })
+
+        if(res.data.status === "success") {
+            alert("post deleted")
+            location.reload(true)
+        }
+    } catch(err) {
+        console.error("Error:", err);
+    }
+}
+

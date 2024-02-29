@@ -339,3 +339,18 @@ button.btn-submit:hover {
     height: 30px; /* Adjust the size as needed */
     border-radius: 50%; /* Make it circular */
 }
+
+
+/*----------------- post delte button ---------------*/
+
+/* Add this to your CSS file */
+/* .post {
+    position: relative;
+} */
+
+.delete-button {
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+    /* Add any additional styling as needed */
+}
