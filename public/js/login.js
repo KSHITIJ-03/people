@@ -77,19 +77,27 @@ const updateUserHandler = async (e) => {
 };
 
 const createPostHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     console.log("hello");
-    const caption = document.getElementById("caption").value
-    const content = document.getElementById("content").value
-    const photo = document.getElementById("photo").files[0]
+    const caption = document.getElementById("caption").value;
+    const content = document.getElementById("content").value;
+    const photo = document.getElementById("photo").files[0];
+    
+    // Retrieve values of tag inputs
+    const tagInputs = document.querySelectorAll(".tag-input");
+    const tags = Array.from(tagInputs).map(input => input.value);
+    console.log(tags);
 
     const formData = new FormData();
-    formData.append("caption", caption)
-    formData.append("photo", photo)
-    formData.append("content", content)
-
-    createPost(formData)
+    formData.append("caption", caption);
+    formData.append("photo", photo);
+    formData.append("content", content);
+    console.log(formData);
+    formData.append("tags", tags);
+    console.log(formData);
+    createPost(formData);
 }
+
 
 const deleteAccountHandler = async (e) => {
     e.preventDefault()
@@ -266,6 +274,7 @@ const updatePassword = async(oldPassword, newPassword, confirmPassword) => {
 
 const createPost = async (data) => {
     try {
+        console.log(data);
         const res = await axios({
             method : "POST",
             url : "http://localhost:3000/api/v1/posts",
@@ -344,3 +353,63 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+const searchForm = document.getElementById('searchForm');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+searchInput.addEventListener('input', async () => {
+    const query = searchInput.value.trim();
+
+    searchResults.innerHTML = '';
+
+    if (query.length > 0) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/v1/users/search?query=${query}`);
+            const results = await response.json();
+            const finalResult = results.users;
+
+            finalResult.forEach(result => {
+                const resultItem = document.createElement('div');
+
+                // Create the image element for the display photo
+                const image = document.createElement('img');
+                image.src = `/img/users/${result.displayPhoto}`; // Assuming the display photo is stored in the "/img/users/" directory
+                image.alt = 'User Display Photo';
+                image.classList.add('user-display-photo'); // Add a class for styling if needed
+
+                // Create the link element for the user profile
+                const link = document.createElement('a');
+                link.href = `/user/${result.username}`; 
+                link.textContent = `${result.name} (${result.username})`;
+
+                // Append both the image and the link to the resultItem
+                resultItem.appendChild(image);
+                resultItem.appendChild(link);
+                
+                searchResults.appendChild(resultItem);
+            });
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const tagContainer = document.getElementById('tagContainer');
+    const addTagBtn = document.getElementById('addTagBtn');
+
+    addTagBtn.addEventListener('click', () => {
+        // Create a new input field
+        const newTagInput = document.createElement('input');
+        newTagInput.type = 'text';
+        newTagInput.name = 'tag[]';
+        newTagInput.className = 'tag-input';
+        newTagInput.placeholder = 'Enter usernames';
+        newTagInput.autocomplete = 'off';
+
+        // Append the new input field to the tag container
+        tagContainer.appendChild(newTagInput);
+    });
+});
+

@@ -15,6 +15,14 @@ block content
             label(for='photo') Photo:
             input(type='file', name='photo', id='photo', accept='image/*')
         div.form-group
+            label(for='tag') Tag users:
+            //- Container to hold dynamically added tag inputs
+            div#tagContainer
+                //- Initial tag input field
+                input(type='text', name='tag[]', class='tag-input', placeholder='Enter usernames', autocomplete='off')
+            //- Button to add more tag input fields
+            button#addTagBtn(type='button') Add Tag Input
+        div.form-group
             label(for='caption') Caption:
             input(type='text', name='caption', id='caption')
         div.form-group

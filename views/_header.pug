@@ -22,6 +22,8 @@ header
         else 
           li: a(href='/login') Login
           li: a(href='/signup') Sign Up
-    form(action='/search', method='GET')
-      input(type='text', placeholder='Search...', name='query')
+    form(action='/search', method='GET' id='searchForm')
+      input(type='text', placeholder='Search...', name='query', id='searchInput')
       button(type='submit') Search
+    div#searchResults.search-results
+

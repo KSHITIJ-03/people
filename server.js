@@ -9,7 +9,7 @@ const app = require("./app")
 
 //console.log(process.env);
 
-console.log(process.env.DATABASE);
+//console.log(process.env.DATABASE);
 
 const DB = process.env.DATABASE.replace("<password>", process.env.DATABASE_PASSWORD)
 

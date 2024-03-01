@@ -330,6 +330,11 @@ button.btn-submit:hover {
     align-items: center; /* Align items vertically */
 }
 
+.user-info {
+  display : flex;
+  align-items: center;
+}
+
 .user-name {
     margin-left: 10px; /* Add some space between the photo and username */
 }
@@ -383,4 +388,13 @@ button.btn-submit:hover {
     color: #fff;
     border: none;
     cursor: pointer;
+}
+
+/*----------------- search bar user display photo ---------------*/
+
+.user-display-photo{
+    width: 30px; /* Adjust the width as needed */
+    height: 30px; /* Adjust the height as needed */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 5px; /* Add some spacing between the photo and the username */
 }

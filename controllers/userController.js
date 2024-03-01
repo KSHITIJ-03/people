@@ -48,21 +48,22 @@ const sharp = require("sharp")
 
 // exports.uploadUserDp = upload.single("displayPhoto")
 
-exports.searchUsers = catchAsync( async (req, res, next) => {
+exports.searchUsers = catchAsync(async (req, res, next) => {
+    const search = req.query.query;
 
-    const search = req.body.search
+    const regex = new RegExp(search, 'i');
 
-    const user = await User.findOne({name : search}).select("-email").populate("posts")
+    const users = await User.find({ name: { $regex: regex } }).select("name username displayPhoto")
 
-    if(!user) {
-        return next(new AppError("user not found", 404))
+    if (!users.length) {
+        return next(new AppError("No users found", 404));
     }
     res.status(200).json({
-        status : "success",
-        user
-    })
+        status: "success",
+        users
+    });
+});
 
-})
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
 

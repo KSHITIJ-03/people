@@ -15,8 +15,27 @@ exports.createPost = catchAsync(async(req, res, next) => {
         photo = req.file.filename
     }
 
+    const tagString = req.body.tags.trim();
+    const taggedUsers = tagString.split(',').map(tag => tag.trim());
+    const users = [];
+
+    const getUsers = async () => {
+        for (const taggedUser of taggedUsers) {
+            try {
+                const user = await User.findOne({ username: taggedUser });
+                if (user) {
+                    users.push(user._id);
+                }
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        }
+    }
+
+    await getUsers()
+
     const content = req.body.content
-    const tags = req.body.tags
+    const tags = users
     const author = req.user._id
     const caption = req.body.caption
     const post = await Post.create({content, tags, author, caption, photo})

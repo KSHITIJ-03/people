@@ -7,7 +7,6 @@ const router = express.Router()
 
 const upload = multer({dest : "public/img/users"})
 
-console.log("hello");
 
 
 router.route("/").get(authController.protect, userController.getAllUsers)

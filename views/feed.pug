@@ -85,8 +85,12 @@ block content
         each post in posts
             .post(data-post-id=post._id)
                 .user-info-container
-                    img.user-display-photo.small-profile(src=`/img/users/${post.author.displayPhoto}`, alt="user-display-photo")
-                    p.user-name= post.author.username
+                    //- Wrap user-name with anchor tag
+                    a(href=`/user/${post.author.username}`) 
+                        // Use flexbox to align items horizontally
+                        .user-info
+                            img.user-display-photo.small-profile(src=`/img/users/${post.author.displayPhoto}`, alt="user-display-photo")
+                            p.user-name= post.author.username
                 
                 .post-content
                     if post.content
