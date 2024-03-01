@@ -13,10 +13,20 @@ exports.getAllUsers = catchAsync(async(req, res, next) => {
 
 exports.getUser = catchAsync(async(req, res, next) => {
 
-    const user = await User.findOne({username : req.params.username}).populate("posts")
+    let followingArray = res.locals.loginUser.following 
+    let isFollowing = false;
+    let user = await User.findOne({username : req.params.username})
+    for (const element of followingArray) {
+        if (element.equals(user._id)) {
+            user = await user.populate("posts")
+            isFollowing = true
+            break
+        } 
+    }
     res.status(200).render("user", {
         title : user.username,
-        user
+        user,
+        isFollowing
     })
 })
 

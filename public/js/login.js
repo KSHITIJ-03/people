@@ -137,6 +137,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const followButton = document.querySelector(".follow-btn");
+
+    followButton.addEventListener("click", async () => {
+        const userId = document.getElementById("follow").value // Retrieve post ID
+        try {
+            console.log(userId);
+            const res = await axios.get(`http://localhost:3000/api/v1/users/${userId}/follow`);
+            if (res.data.status === "success") {
+                location.reload(true); // Reload page after successful like
+            }
+        } catch(err) {
+            console.error("Error:", err);
+        }
+    });
+});
+
 // document.addEventListener("DOMContentLoaded", () => {
 //     const deletePostButtons = document.querySelectorAll(".delete-btn");
 
