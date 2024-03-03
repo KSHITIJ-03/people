@@ -1,0 +1,14 @@
+extends base
+
+block content
+    h2 Follow Requests
+
+    each request in requests.reverse()
+        .request-container
+            .user-info
+                img.requested-user-photo(src=`/img/users/${request.requester.displayPhoto}`, alt="requested user photo")
+                span.requested-username #{request.requester.username}
+            .request-actions
+                //- Add data-request-id attribute to buttons
+                button.accept-btn(type='button', value=request.requester._id, id='accept') Accept
+                button.reject-btn(type='button', value=request.requester._id, id='reject') Reject

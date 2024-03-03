@@ -8,6 +8,7 @@ block content
             | Posts: #{loginUser.postCount} 
             | Following: #{loginUser.following.length} 
             | Followers: #{loginUser.followers.length}
+            a(href="/follow-requests") follow requests 
     //- Form for updating user information
     form.form-updateUser
         div.form-group

@@ -36,7 +36,9 @@ exports.deleteFollowRequest = catchAsync(async(req, res, next) => {
         return next(new AppError("user not found", 404))
     }
 
-    if(req.body.accept) {
+    console.log(req.body);
+
+    if(req.body.accept === "true") {
 
         await User.findByIdAndUpdate(req.user._id, {
             $addToSet : { followers : req.params.userId}

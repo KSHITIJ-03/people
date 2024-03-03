@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const userId = document.getElementById("follow").value // Retrieve post ID
         try {
             console.log(userId);
-            const res = await axios.get(`http://localhost:3000/api/v1/users/${userId}/follow`);
+            const res = await axios.post(`http://localhost:3000/api/v1/users/${userId}/followRequest`);
             if (res.data.status === "success") {
                 location.reload(true); // Reload page after successful like
             }
@@ -154,6 +154,49 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const acceptButton = document.getElementById("accept")
+
+    acceptButton.addEventListener("click", async () => {
+        const userId = document.getElementById("accept").value // Retrieve post ID
+        try {
+            console.log(userId);
+            const accept = "true"
+            const res = await axios({
+                    method : "DELETE",
+                    url : `http://localhost:3000/api/v1/users/${userId}/followRequest`,
+                    data : {accept}
+                });
+            if (res.data.status === "success") {
+                location.reload(true); // Reload page after successful acceptance
+            }
+        } catch(err) {
+            console.error("Error:", err);
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const rejectButton = document.getElementById("reject")
+
+    rejectButton.addEventListener("click", async () => {
+        const userId = document.getElementById("reject").value // Retrieve post ID
+        try {
+            console.log(userId);
+            const accept = "false"
+            const res = await axios({
+                    method : "DELETE",
+                    url : `http://localhost:3000/api/v1/users/${userId}/followRequest`,
+                    data : {accept}
+                });
+            if (res.data.status === "success") {
+                location.reload(true); // Reload page after successful acceptance
+            }
+        } catch(err) {
+            console.error("Error:", err);
+        }
+    });
+});
 // document.addEventListener("DOMContentLoaded", () => {
 //     const deletePostButtons = document.querySelectorAll(".delete-btn");
 

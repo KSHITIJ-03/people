@@ -9,6 +9,7 @@ block content
           .form__user-photo-container
               img.form__user-photo(src=`/img/users/${user.displayPhoto}`, alt="user photo")
         .user-info
+          //button.follow-btn(type="button", class="follow", id="follow", value=user._id) follow
           p.user-followers Followers: #{user.followers.length}
           p.user-following Following: #{user.following.length}
           p.user-post-count Posts: #{user.postCount}

@@ -44,4 +44,7 @@ block content
     else 
         p You are not following #{user.username}
         //- Follow button
-        button.follow-btn(type="button", class="follow", id="follow", value=user._id) follow
+        if isRequested
+            button.follow-btn(type="button", class="follow", id="follow", value=user._id) requested
+        else
+            button.follow-btn(type="button", class="follow", id="follow", value=user._id) follow

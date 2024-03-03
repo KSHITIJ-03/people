@@ -23,4 +23,6 @@ router.route("/feed").get(authController.protect, viewController.feed)
 
 router.route("/delete").get(authController.protect, viewController.delete)
 
+router.route("/follow-requests").get(authController.protect, viewController.followRequests)
+
 module.exports = router

@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const User = require("./../models/userModel")
 const Post = require("./../models/postModel")
+const Request = require("./../models/requestModel")
 
 exports.getAllUsers = catchAsync(async(req, res, next) => {
 
@@ -14,7 +15,7 @@ exports.getAllUsers = catchAsync(async(req, res, next) => {
 exports.getUser = catchAsync(async(req, res, next) => {
 
     let followingArray = res.locals.loginUser.following 
-    let isFollowing = false;
+    let isFollowing = false; 
     let user = await User.findOne({username : req.params.username})
     for (const element of followingArray) {
         if (element.equals(user._id)) {
@@ -23,10 +24,15 @@ exports.getUser = catchAsync(async(req, res, next) => {
             break
         } 
     }
+    let isRequested = false;
+    if(await Request.findOne({requester : res.locals.loginUser, requested : user._id})) {
+        isRequested = true
+    }
     res.status(200).render("user", {
         title : user.username,
         user,
-        isFollowing
+        isFollowing,
+        isRequested
     })
 })
 
@@ -58,6 +64,15 @@ exports.passwordAndSecurity = catchAsync(async(req, res, next) => {
 
     res.status(200).render("security", {
         title : "security settings"
+    })
+})
+
+exports.followRequests = catchAsync(async(req, res, next) => {
+
+    const requests = await Request.find({requested : res.locals.loginUser._id}).populate("requester")
+    res.status(200).render("requests", {
+        title : "follow requests",
+        requests
     })
 })
 
