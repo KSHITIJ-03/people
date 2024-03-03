@@ -3,6 +3,7 @@ const multer = require("multer")
 const userController = require("./../controllers/userController")
 const authController = require("./../controllers/authController")
 const imageController = require("./../controllers/imageController")
+const requestController = require("./../controllers/requestController")
 const router = express.Router()
 
 const upload = multer({dest : "public/img/users"})
@@ -36,5 +37,11 @@ router.route("/:userId/follow").get(authController.protect, userController.follo
 
 //feed
 router.route("/feed").get(authController.protect, userController.userFeed)
+
+// -------------- follow requests -------------------- //
+
+router.route("/:userId/followRequest").post(authController.protect, requestController.createFollowRequest)
+
+router.route("/:userId/followRequest").delete(authController.protect, requestController.deleteFollowRequest)
 
 module.exports = router

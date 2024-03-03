@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs")
-const crypto = require("crypto")
+const crypto = require("crypto");
+const { ObjectId } = require("bson");
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -63,7 +64,7 @@ const userSchema = new mongoose.Schema({
     following : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : "User"
-    }]
+    }],
 },
 {
     toJSON : {virtuals : true},
@@ -137,6 +138,10 @@ userSchema.methods.createPasswordResetToken = function() {
 userSchema.methods.isFollowing = function(userId) {
     return this.following.includes(userId);
 }
+
+// userSchema.methods.addFollowRequest = function(userId) {
+//     return this.followRequest.includes(userId)
+// }
 
 userSchema.statics.getUserFeed = async function(userId) {
     const users = await this.find({followers : userId}).populate("posts").select("-email")
