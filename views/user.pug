@@ -45,6 +45,6 @@ block content
         p You are not following #{user.username}
         //- Follow button
         if isRequested
-            button.follow-btn(type="button", class="follow", id="follow", value=user._id) requested
+            button.deleteRequestbtn(type="button", class="follow", id="delReq", value=user._id) requested
         else
             button.follow-btn(type="button", class="follow", id="follow", value=user._id) follow

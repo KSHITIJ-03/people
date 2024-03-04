@@ -1,4 +1,6 @@
 const mongoose = require("mongoose")
+const path = require("path")
+const express = require("express")
 
 const dotenv = require("dotenv")
 dotenv.config({path : "./config.env"})
@@ -6,6 +8,16 @@ dotenv.config({path : "./config.env"})
 
 const app = require("./app")
 
+// for socket defining server explicitly
+const http = require("http")
+const server = http.createServer(app)
+const socketio = require("socket.io")
+const io = new socketio.Server(server)
+
+app.set("view engine", "pug")
+app.set("views", path.join(__dirname, "views"))
+
+app.use(express.static(path.join(__dirname, "public")))
 
 //console.log(process.env);
 
@@ -22,6 +34,8 @@ mongoose.connect(DB).then(con => {
 
 const PORT = process.env.PORT || 3000
 
-app.listen(PORT, () =>{
+server.listen(PORT, () =>{
     console.log("server started at port : " + PORT);
 })
+
+module.exports = io

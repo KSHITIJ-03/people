@@ -158,6 +158,29 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    const deleteRequestButton = document.querySelector(".deleteRequestbtn");
+
+    deleteRequestButton.addEventListener("click", async () => {
+        const userId = document.getElementById("delReq").value
+        try {
+            const accept = "undo"
+            const res = await axios({
+                    method : "DELETE",
+                    url : `http://localhost:3000/api/v1/users/${userId}/followRequest`,
+                    data : {accept}
+                });
+            if (res.data.status === "success") {
+                location.reload(true); // Reload page after successful like
+            }
+        } catch(err) {
+            console.error("Error:", err);
+        }
+    });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
     const acceptButton = document.getElementById("accept")
 
     acceptButton.addEventListener("click", async () => {

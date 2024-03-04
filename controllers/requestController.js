@@ -28,6 +28,15 @@ exports.deleteFollowRequest = catchAsync(async(req, res, next) => {
 
     // req.body.accept is true or false
 
+    if(req.body.accept === "undo") {
+        await Request.findOneAndDelete({requested : req.params.userId, requester : req.user._id})
+
+        return res.status(200).json({
+            status : "success",
+            message : "request deleted"
+        })
+    }
+
     if(!await Request.findOne({requester : req.params.userId, requested : req.user._id})) {
         return next(new AppError("invalid request", 400))
     }
@@ -54,7 +63,8 @@ exports.deleteFollowRequest = catchAsync(async(req, res, next) => {
             status : "success",
             message : "request accepted"
         })
-    } else {
+    }
+    else {
 
         await Request.findOneAndDelete({requester : req.params.userId, requested : req.user._id})
 
