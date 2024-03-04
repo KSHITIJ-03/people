@@ -100,8 +100,18 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         displayPhoto = req.file.filename
     }
 
+    console.log(req.body);
+
+    let private
+
+    if(req.body.private === "true") {
+        private = true
+    } else {
+        private = false
+    }
+
     const user = await User.findOneAndUpdate({email : req.user.email}, {
-        name : req.body.name, username : req.body.username, displayPhoto}, {
+        name : req.body.name, username : req.body.username, displayPhoto, private}, {
         new : true,
         runValidators : true
     })

@@ -14,9 +14,12 @@ exports.getAllUsers = catchAsync(async(req, res, next) => {
 
 exports.getUser = catchAsync(async(req, res, next) => {
 
+
+    let user = await User.findOne({username : req.params.username})
+    
     let followingArray = res.locals.loginUser.following 
     let isFollowing = false; 
-    let user = await User.findOne({username : req.params.username})
+
     for (const element of followingArray) {
         if (element.equals(user._id)) {
             user = await user.populate("posts")
@@ -76,6 +79,13 @@ exports.followRequests = catchAsync(async(req, res, next) => {
     })
 })
 
+exports.messages = catchAsync(async(req, res, next) => {
+    
+    res.status(200).render("messages", {
+        title : "messages"
+    })
+})
+
 exports.createPost = catchAsync(async(req, res, next) => {
     res.status(200).render("compose", {
         title : "compose"
@@ -83,7 +93,8 @@ exports.createPost = catchAsync(async(req, res, next) => {
 })
 
 exports.feed = catchAsync(async(req, res, next) => {
-    const posts = await Post.find().sort({createdAt : -1}).populate({
+    const followingIds = res.locals.loginUser.following.map(user => user._id);
+    const posts = await Post.find({ author: { $in: followingIds } }).sort({createdAt : -1}).populate({
         path : "author",
         select : "displayPhoto username _id"
     })

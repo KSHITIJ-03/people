@@ -67,11 +67,15 @@ const updateUserHandler = async (e) => {
     const username = document.getElementById("username").value;
     const name = document.getElementById("name").value;
     const displayPhoto = document.getElementById("displayPhoto").files[0]
+    const accountType = document.getElementById("accountType").value
+    let private = false
+    if(accountType === "private") private = true
     //console.log(name);
     const formData = new FormData();
     formData.append('username', username);
     formData.append('name', name);
     formData.append('displayPhoto', displayPhoto);
+    formData.append('private', private)
 
     updateUser(formData)
 };
@@ -141,9 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const followButton = document.querySelector(".follow-btn");
 
     followButton.addEventListener("click", async () => {
-        const userId = document.getElementById("follow").value // Retrieve post ID
+        const userId = document.getElementById("follow").value
         try {
-            console.log(userId);
             const res = await axios.post(`http://localhost:3000/api/v1/users/${userId}/followRequest`);
             if (res.data.status === "success") {
                 location.reload(true); // Reload page after successful like
@@ -158,9 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const acceptButton = document.getElementById("accept")
 
     acceptButton.addEventListener("click", async () => {
-        const userId = document.getElementById("accept").value // Retrieve post ID
+        const userId = document.getElementById("accept").value
         try {
-            console.log(userId);
             const accept = "true"
             const res = await axios({
                     method : "DELETE",
@@ -180,9 +182,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const rejectButton = document.getElementById("reject")
 
     rejectButton.addEventListener("click", async () => {
-        const userId = document.getElementById("reject").value // Retrieve post ID
+        const userId = document.getElementById("reject").value
         try {
-            console.log(userId);
             const accept = "false"
             const res = await axios({
                     method : "DELETE",

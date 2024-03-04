@@ -8,7 +8,6 @@ block content
             | Posts: #{loginUser.postCount} 
             | Following: #{loginUser.following.length} 
             | Followers: #{loginUser.followers.length}
-            a(href="/follow-requests") follow requests 
     //- Form for updating user information
     form.form-updateUser
         div.form-group
@@ -17,6 +16,16 @@ block content
         div.form-group
             label(for='username') Username:
             input(type='text', name='username', id='username', value=user.username, required)
+        div.form-group
+            //- Dropdown for account type
+            label(for='accountType') Account Type: #{loginUser.private}
+            select#accountType(name='accountType')
+                if loginUser.accountType 
+                    option(value='private' selected) private
+                    option(value='public' ) public
+                else 
+                    option(value='public' selected) public
+                    option(value='private') private
         div.form-group.form__photo-upload
             label(for='displayPhoto') Display Picture:
             //- Added CSS classes for circular display photo

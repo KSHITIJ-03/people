@@ -25,4 +25,6 @@ router.route("/delete").get(authController.protect, viewController.delete)
 
 router.route("/follow-requests").get(authController.protect, viewController.followRequests)
 
+router.route("/direct-messages").get(authController.protect, viewController.messages)
+
 module.exports = router

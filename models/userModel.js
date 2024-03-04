@@ -65,6 +65,10 @@ const userSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "User"
     }],
+    private : {
+        type : Boolean,
+        default : true
+    }
 },
 {
     toJSON : {virtuals : true},
@@ -125,13 +129,10 @@ userSchema.methods.passwordChange = function(jwtTokenTime) {  // again why i can
 }
 
 userSchema.methods.createPasswordResetToken = function() {
-    console.log("hello");
     const resetToken = crypto.randomBytes(32).toString("hex")
-    console.log(resetToken);
     this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex")
-    console.log(this.passwordResetToken);
+
     this.passwordResetExpire = Date.now() + 10*60*1000
-    console.log("hello");
     return resetToken
 }
 
