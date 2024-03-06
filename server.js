@@ -14,11 +14,6 @@ const server = http.createServer(app)
 const socketio = require("socket.io")
 const io = new socketio.Server(server)
 
-app.set("view engine", "pug")
-app.set("views", path.join(__dirname, "views"))
-
-app.use(express.static(path.join(__dirname, "public")))
-
 //console.log(process.env);
 
 //console.log(process.env.DATABASE);

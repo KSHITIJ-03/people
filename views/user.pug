@@ -10,6 +10,8 @@ block content
             | Posts: #{user.postCount} 
             | Following: #{user.following.length} 
             | Followers: #{user.followers.length}
+            if isFollowing
+                button.unfollow-btn(type="button", class="follow", id="unfollow", value=user._id) unfollow
 
     //-Container for user posts
     if isFollowing

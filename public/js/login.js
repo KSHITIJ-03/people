@@ -158,6 +158,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    const unfollowButton = document.querySelector(".unfollow-btn");
+
+    unfollowButton.addEventListener("click", async () => {
+        const userId = document.getElementById("unfollow").value
+        try {
+            const res = await axios.get(`http://localhost:3000/api/v1/users/${userId}/follow`);
+            if (res.data.status === "success") {
+                location.reload(true); // Reload page after successful like
+            }
+        } catch(err) {
+            console.error("Error:", err);
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
     const deleteRequestButton = document.querySelector(".deleteRequestbtn");
 
     deleteRequestButton.addEventListener("click", async () => {

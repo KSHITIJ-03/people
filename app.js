@@ -13,6 +13,13 @@ const errorController = require("./controllers/errorController")
 
 const appError = require("./utils/appError")
 
+//const io = require("./server")
+const http = require("http")
+const server = http.createServer(app)
+const socketio = require("socket.io")
+const io = new socketio.Server(server)
+const socketLogic = require("./socketio")
+
 app.set("view engine", "pug")
 app.set("views", path.join(__dirname, "views"))
 
@@ -26,6 +33,12 @@ app.use((req, res, next) => {
     //console.log(req.cookies);
     next()
 })
+
+app.get("/", (req, res) => {
+    res.send("hello from the server")
+})
+
+app.use(socketLogic(io))  // socketLogic
 
 app.use("/", viewRouter)
 
