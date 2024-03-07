@@ -27,4 +27,6 @@ router.route("/follow-requests").get(authController.protect, viewController.foll
 
 router.route("/direct-messages").get(authController.protect, viewController.messages)
 
+router.route("/user/:username/messages").get(authController.protect, viewController.directMessages)
+
 module.exports = router

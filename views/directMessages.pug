@@ -1,0 +1,15 @@
+extends base
+
+block content 
+    h2 messages | #{user.name} | 
+        img.user-display-photo.small-profile(src=`/img/users/${user.displayPhoto}`, alt="user photo")
+    ul#messages
+        .chat-messages
+        .chat-form-container
+            form#messagesForm(action="")
+                input#msg(type="text" placeholder="Enter Message" required autocomplete="off")
+                button.btn(type="submit") Send
+
+
+        script(src='/socket.io/socket.io.js')
+        script(src='js/main.js')

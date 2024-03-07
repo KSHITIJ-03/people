@@ -1,4 +1,7 @@
 extends base
 
 block content 
-    h2 messages
+    each user in users
+        .user-link
+            img.user-display-photo.small-profile(src=`/img/users/${user.displayPhoto}`, alt="user photo")
+            a(href=`/user/${user.username}/messages`) #{user.name}

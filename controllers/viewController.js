@@ -80,9 +80,20 @@ exports.followRequests = catchAsync(async(req, res, next) => {
 })
 
 exports.messages = catchAsync(async(req, res, next) => {
-    
+    let followingArray = res.locals.loginUser.following 
+    const users = await User.find({ _id: { $in: followingArray } })
     res.status(200).render("messages", {
-        title : "messages"
+        title : "messages",
+        followingArray,
+        users
+    })
+})
+
+exports.directMessages = catchAsync(async(req, res, next) => {
+    const user = await User.findOne({username : req.params.username})
+    res.status(200).render("directMessages", {
+        title : "dm",
+        user
     })
 })
 
