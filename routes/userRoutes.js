@@ -6,9 +6,12 @@ const imageController = require("./../controllers/imageController")
 const requestController = require("./../controllers/requestController")
 const router = express.Router()
 
+const socketLogic = require("./../socketio")
+const io = require("./../server")
+
 const upload = multer({dest : "public/img/users"})
 
-
+//router.use(socketLogic(io))
 
 router.route("/").get(authController.protect, userController.getAllUsers)
 

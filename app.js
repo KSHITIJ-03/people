@@ -38,13 +38,18 @@ app.get("/", (req, res) => {
     res.send("hello from the server")
 })
 
-app.use(socketLogic(io))  // socketLogic
+//app.use(socketLogic(io))  // socketLogic
+
 
 app.use("/", viewRouter)
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/posts", postRouter)
 app.use("/api/v1/comments", commentRouter)
+
+// io.on("connection", (socket) => {
+//     console.log("a user connected");
+// })
 
 app.all("*", (req, res, next) => {
     next(new appError(`can't find ${req.originalUrl} on this server`, 404))
