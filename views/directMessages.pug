@@ -8,7 +8,7 @@ block content
         .chat-form-container
             form#messagesForm(action="")
                 input#msg(type="text" placeholder="Enter Message" required autocomplete="off")
-                button.btn(type="submit") Send
+                button.btn(type="submit" id='submit-chat-button' value=`#{user.username}`) Send
 
 
         script(src='/socket.io/socket.io.js')

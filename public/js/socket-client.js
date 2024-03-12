@@ -1,11 +1,15 @@
 const socket = io()
 const messagesForm = document.getElementById("messagesForm")
+const username = document.getElementById("submit-chat-button")
 
-socket.on("message", message => {
+socket.emit('joinRoom', username);
+
+socket.on("message", ({message}) => {
     console.log(message);
     outputMessage(message)
     chatMessages.scrollTop = chatMessages.scrollHeight
 })
+
 
 
 messagesForm.addEventListener("submit", (e) => {
@@ -13,7 +17,7 @@ messagesForm.addEventListener("submit", (e) => {
     const msg = e.target.elements.msg.value
     console.log(msg);
 
-    socket.emit("chatMessage", (msg))
+    socket.emit("chatMessage", {msg, username})
     e.target.elements.msg.value = ""
     e.target.elements.msg.focus()
 })

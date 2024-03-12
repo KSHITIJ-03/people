@@ -81,7 +81,8 @@ exports.followRequests = catchAsync(async(req, res, next) => {
 
 exports.messages = catchAsync(async(req, res, next) => {
     let followingArray = res.locals.loginUser.following 
-    const users = await User.find({ _id: { $in: followingArray } })
+    //const users = await User.find({ _id: { $in: followingArray } })
+    const users = await User.find()
     res.status(200).render("messages", {
         title : "messages",
         followingArray,

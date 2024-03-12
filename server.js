@@ -14,7 +14,7 @@ const server = http.createServer(app)
 const socketio = require("socket.io")
 const io = new socketio.Server(server)
 
-const socketLogic = require("./socketio")
+const socketLogic = require("./controllers/socketController")
 
 // io.on("connection", (socket) => {
 //     console.log("a user is connected");

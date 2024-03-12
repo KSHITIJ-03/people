@@ -6,7 +6,7 @@ const imageController = require("./../controllers/imageController")
 const requestController = require("./../controllers/requestController")
 const router = express.Router()
 
-const socketLogic = require("./../socketio")
+const socketLogic = require("./../controllers/socketController")
 const io = require("./../server")
 
 const upload = multer({dest : "public/img/users"})
